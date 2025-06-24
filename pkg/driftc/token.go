@@ -1,95 +1,95 @@
 package driftc
 
-type TokenType int
+type TokenType string
 
 const (
 	// general, done
 
-	TokenEOF TokenType = iota
-	TokenName
-	TokenSemicolon // ;
-	TokenColon     // :
-	TokenComma     // ,
-	TokenDot       // .
-	TokenLet       // let
-	TokenReturn    // return
+	TokenEOF       TokenType = "EOF"
+	TokenName      TokenType = "Name"
+	TokenSemicolon TokenType = ";"
+	TokenColon     TokenType = ":"
+	TokenComma     TokenType = ","
+	TokenDot       TokenType = "."
+	TokenLet       TokenType = "let"
+	TokenReturn    TokenType = "return"
 
 	// functions, done
 
-	TokenFunction // function
-	TokenFragment // fragment
-	TokenVertex   // vertex
+	TokenFunction TokenType = "function"
+	TokenFragment TokenType = "fragment"
+	TokenVertex   TokenType = "vertex"
 
 	// imports, done
 
-	TokenExport // export
-	TokenImport // import
-	TokenFrom   // from
+	TokenExport TokenType = "export"
+	TokenImport TokenType = "import"
+	TokenFrom   TokenType = "from"
 
 	// types, done
 
-	TokenFloat       // float
-	TokenInt         // int
-	TokenBoolean     // bool
-	TokenVec2        // vec2
-	TokenVec3        // vec3
-	TokenVec4        // vec4
-	TokenIntVec2     // ivec2
-	TokenIntVec3     // ivec3
-	TokenIntVec4     // ivec4
-	TokenBooleanVec2 // bvec2
-	TokenBooleanVec3 // bvec3
-	TokenBooleanVec4 // bvec4
+	TokenFloat       TokenType = "float"
+	TokenInt         TokenType = "int"
+	TokenBoolean     TokenType = "bool"
+	TokenVec2        TokenType = "vec2"
+	TokenVec3        TokenType = "vec3"
+	TokenVec4        TokenType = "vec4"
+	TokenIntVec2     TokenType = "ivec2"
+	TokenIntVec3     TokenType = "ivec3"
+	TokenIntVec4     TokenType = "ivec4"
+	TokenBooleanVec2 TokenType = "bvec2"
+	TokenBooleanVec3 TokenType = "bvec3"
+	TokenBooleanVec4 TokenType = "bvec4"
 
 	// literals, done
 
-	TokenStringLiteral
-	TokenFloatLiteral
-	TokenIntLiteral
-	TokenBooleanLiteral // true/false
+	TokenStringLiteral  TokenType = "string literal"
+	TokenFloatLiteral   TokenType = "undefined"
+	TokenIntLiteral     TokenType = "undefined"
+	TokenBooleanLiteral TokenType = "true/false"
 
 	// brackets, done
 
-	TokenOpenParen    // (
-	TokenCloseParen   // )
-	TokenOpenBrace    // {
-	TokenCloseBrace   // }
-	TokenOpenBracket  // [
-	TokenCloseBracket // ]
+	TokenOpenParen    TokenType = "("
+	TokenCloseParen   TokenType = ")"
+	TokenOpenBrace    TokenType = "{"
+	TokenCloseBrace   TokenType = "}"
+	TokenOpenBracket  TokenType = "["
+	TokenCloseBracket TokenType = "]"
 
 	// general operators, done
 
-	TokenPlus     // +
-	TokenMinus    // -
-	TokenDivide   // /
-	TokenMultiply // *
+	TokenPlus     TokenType = "+"
+	TokenMinus    TokenType = "-"
+	TokenDivide   TokenType = "/"
+	TokenMultiply TokenType = "*"
 
 	// logical & bit operators
 
-	TokenEqual      // ==
-	TokenNot        // !
-	TokenNotEqual   // !=
-	TokenXor        // ^
-	TokenBitAnd     // &
-	TokenLogicalAnd // &&
-	TokenBitOr      // |
-	TokenLogicalOr  // ||
+	TokenEqual      TokenType = "=="
+	TokenNot        TokenType = "!"
+	TokenNotEqual   TokenType = "!="
+	TokenXor        TokenType = "^"
+	TokenBitAnd     TokenType = "&"
+	TokenLogicalAnd TokenType = "&&"
+	TokenBitOr      TokenType = "|"
+	TokenLogicalOr  TokenType = "||"
 
 	// assign operators (done)
 
-	TokenAssign         // =
-	TokenPlusAssign     // +=
-	TokenMinusAssign    // -=
-	TokenDivideAssign   // /=
-	TokenMultiplyAssign // *=
-	TokenBitOrAssign    // |=
+	TokenAssign         TokenType = "="
+	TokenPlusAssign     TokenType = "+="
+	TokenMinusAssign    TokenType = "-="
+	TokenDivideAssign   TokenType = "/="
+	TokenMultiplyAssign TokenType = "*="
 
 	// not done
 
-	TokenLogicalOrAssign  // ||=
-	TokenBitAndAssign     // &=
-	TokenLogicalAndAssign // &&=
-	TokenXorAssign        // ^=
+	TokenBitOrAssign      TokenType = "|="
+	TokenLogicalOrAssign  TokenType = "||="
+	TokenBitAndAssign     TokenType = "&="
+	TokenLogicalAndAssign TokenType = "&&="
+	TokenXorAssign        TokenType = "^="
 )
 
 type Token struct {

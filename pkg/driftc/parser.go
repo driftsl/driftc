@@ -3,7 +3,6 @@ package driftc
 import (
 	"fmt"
 	"slices"
-	"strconv"
 )
 
 type Parser struct {
@@ -18,7 +17,7 @@ func (p *Parser) peek() Token {
 func (p *Parser) expect(tokenTypes ...TokenType) (Token, error) {
 	token := p.peek()
 
-	p.advance()
+	p.pos += 1
 
 	if slices.Contains(tokenTypes, token.Type) {
 		return token, nil
@@ -27,20 +26,16 @@ func (p *Parser) expect(tokenTypes ...TokenType) (Token, error) {
 	var expectedString string
 
 	if len(tokenTypes) == 1 {
-		expectedString = "'" + strconv.FormatInt(int64(tokenTypes[0]), 10) + "'"
+		expectedString = "'" + string(tokenTypes[0]) + "'"
 	} else {
 		for _, t := range tokenTypes {
-			expectedString += strconv.FormatInt(int64(t), 10) + "/"
+			expectedString += "'" + string(t) + "' or "
 		}
 
-		expectedString = expectedString[:len(expectedString)-1]
+		expectedString = expectedString[:len(expectedString)-4]
 	}
 
 	return token, fmt.Errorf("unexpected token '%s', want %s", token.Value, expectedString)
-}
-
-func (p *Parser) advance() {
-	p.pos += 1
 }
 
 func (p *Parser) Parse(tokens []Token) (RootNode, error) {
