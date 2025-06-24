@@ -44,13 +44,11 @@ func (l *Lexer) readWhile(f func(rune) bool) string {
 	for {
 		ch := l.peek()
 		if ch == 0 || !f(ch) {
-			break
+			return builder.String()
 		}
 		builder.WriteRune(ch)
 		l.advance()
 	}
-
-	return builder.String()
 }
 
 func (l *Lexer) skipWhitespace() {
@@ -289,9 +287,7 @@ func (l *Lexer) Tokenize(input []rune) ([]Token, error) {
 		}
 		result = append(result, token)
 		if token.Type == TokenEOF {
-			break
+			return result, nil
 		}
 	}
-
-	return result, nil
 }
