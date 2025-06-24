@@ -75,7 +75,7 @@ const (
 	TokenBitOr      TokenType = "|"
 	TokenLogicalOr  TokenType = "||"
 
-	// assign operators (done)
+	// assign operators, done
 
 	TokenAssign         TokenType = "="
 	TokenPlusAssign     TokenType = "+="

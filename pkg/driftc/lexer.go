@@ -29,8 +29,6 @@ func (l *Lexer) advance() {
 	}
 
 	l.pos++
-
-	return
 }
 
 func (l *Lexer) peek() rune {
@@ -289,10 +287,10 @@ func (l *Lexer) Tokenize(input []rune) ([]Token, error) {
 		if err != nil {
 			return result, err
 		}
+		result = append(result, token)
 		if token.Type == TokenEOF {
 			break
 		}
-		result = append(result, token)
 	}
 
 	return result, nil
