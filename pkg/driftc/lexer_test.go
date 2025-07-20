@@ -1,16 +1,19 @@
 package driftc_test
 
 import (
-	"github.com/driftsl/driftc/pkg/driftc"
+	"fmt"
 	"testing"
+
+	"github.com/driftsl/driftc/pkg/driftc"
 )
 
 func TestLexer_Tokenize(t *testing.T) {
 	tests := []struct {
-		name    string
-		input   string
-		want    []driftc.Token
-		wantErr bool
+		name          string
+		input         string
+		want          []driftc.Token
+		wantErr       bool
+		parseComments bool
 	}{
 		{
 			name:  "literals",
@@ -24,11 +27,15 @@ func TestLexer_Tokenize(t *testing.T) {
 		},
 		{
 			name:  "divide operator and comments",
-			input: "/= / // this is a comment\n//// another comment",
+			input: "/= / // this is a comment\n//// another comment\n/",
 			want: []driftc.Token{
 				{Type: driftc.TokenDivideAssign, Value: "/="},
 				{Type: driftc.TokenDivide, Value: "/"},
+				{Type: driftc.TokenComment, Value: "// this is a comment"},
+				{Type: driftc.TokenComment, Value: "//// another comment"},
+				{Type: driftc.TokenDivide, Value: "/"},
 			},
+			parseComments: true,
 		},
 		{
 			name:  "bit and logical operators",
@@ -58,7 +65,7 @@ func TestLexer_Tokenize(t *testing.T) {
 	var l driftc.Lexer
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, gotErr := l.Tokenize([]rune(tt.input))
+			got, gotErr := l.Tokenize([]rune(tt.input), tt.parseComments)
 			if gotErr != nil {
 				if !tt.wantErr {
 					t.Errorf("Tokenize() failed: %v", gotErr)
@@ -76,7 +83,17 @@ func TestLexer_Tokenize(t *testing.T) {
 			got = got[:len(got)-1]
 
 			if !compareTokens(got, tt.want) {
-				t.Errorf("Tokenize() = %+v\nwant %+v", got, tt.want)
+				gotString := ""
+				for i, token := range got {
+					gotString += fmt.Sprintf("\t%d: \t%+v\n", i, token)
+				}
+
+				wantString := ""
+				for i, token := range tt.want {
+					wantString += fmt.Sprintf("\n\t%d: \t%+v", i, token)
+				}
+
+				t.Errorf("\nTokenize():\n%swant:%s", gotString, wantString)
 			}
 		})
 	}

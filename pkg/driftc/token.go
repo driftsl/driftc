@@ -13,6 +13,7 @@ const (
 	TokenDot       TokenType = "."
 	TokenLet       TokenType = "let"
 	TokenReturn    TokenType = "return"
+	TokenComment   TokenType = "COMMENT"
 
 	// functions, done
 

@@ -10,6 +10,8 @@ import (
 type Lexer struct {
 	input []rune
 
+	parseComments bool
+
 	pos    int
 	line   int
 	column int
@@ -272,10 +274,12 @@ func (l *Lexer) nextToken() (Token, error) {
 		token.Value, token.Type = l.readOperator(ch, TokenMinus, TokenMinusAssign)
 	case '/':
 		if l.peek() == '/' {
+			token.Value, token.Type = "/"+l.readWhile(func(r rune) bool { return r != '\n' }), TokenComment
 			l.advance()
-			l.readWhile(func(r rune) bool { return r != '\n' })
-			l.advance()
-			return l.nextToken()
+			if !l.parseComments {
+				return l.nextToken()
+			}
+			break
 		}
 		token.Value, token.Type = l.readOperator(ch, TokenDivide, TokenDivideAssign)
 	case '*':
@@ -317,8 +321,11 @@ func (l *Lexer) nextToken() (Token, error) {
 	return token, nil
 }
 
-func (l *Lexer) Tokenize(input []rune) ([]Token, error) {
+func (l *Lexer) Tokenize(input []rune, parseComments bool) ([]Token, error) {
 	l.input = input
+
+	l.parseComments = parseComments
+
 	l.line = 1
 	l.column = 1
 	l.pos = 0
