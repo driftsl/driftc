@@ -111,6 +111,25 @@ func (l *Lexer) readString() (string, error) {
 	}
 }
 
+func (l *Lexer) readBitOrLogicalOperator(
+	ch rune,
+	bitSimpleType TokenType,
+	bitAssignType TokenType,
+	logicalSimpleType TokenType,
+	logicalAssignType TokenType,
+) (string, TokenType) {
+	next := l.peek()
+
+	if next != ch {
+		return l.readOperator(ch, bitSimpleType, bitAssignType)
+	}
+
+	l.advance()
+
+	value, tokenType := l.readOperator(next, logicalSimpleType, logicalAssignType)
+	return string(ch) + value, tokenType
+}
+
 func (l *Lexer) readOperator(ch rune, simpleType TokenType, assignType TokenType) (string, TokenType) {
 	next := l.peek()
 
@@ -263,7 +282,33 @@ func (l *Lexer) nextToken() (Token, error) {
 		token.Value, token.Type = l.readOperator(ch, TokenMultiply, TokenMultiplyAssign)
 
 	case '=':
-		token.Type = TokenAssign
+		if l.peek() == '=' {
+			token.Value, token.Type = "==", TokenEqual
+			l.advance()
+		} else {
+			token.Type = TokenAssign
+		}
+
+	case '!':
+		token.Value, token.Type = l.readOperator(ch, TokenNot, TokenNotEqual)
+	case '^':
+		token.Value, token.Type = l.readOperator(ch, TokenXor, TokenXorAssign)
+	case '&':
+		token.Value, token.Type = l.readBitOrLogicalOperator(
+			ch,
+			TokenBitAnd,
+			TokenBitAndAssign,
+			TokenLogicalAnd,
+			TokenLogicalAndAssign,
+		)
+	case '|':
+		token.Value, token.Type = l.readBitOrLogicalOperator(
+			ch,
+			TokenBitOr,
+			TokenBitOrAssign,
+			TokenLogicalOr,
+			TokenLogicalOrAssign,
+		)
 
 	default:
 		return token, fmt.Errorf("unknown token starting with %c", ch)

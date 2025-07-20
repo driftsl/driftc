@@ -31,8 +31,26 @@ func TestLexer_Tokenize(t *testing.T) {
 			},
 		},
 		{
-			name:  "unterminated string",
-			input: "\"hello world",
+			name:  "bit and logical operators",
+			input: "| |= || ||= & &= && &&= == = ! !=",
+			want: []driftc.Token{
+				{Type: driftc.TokenBitOr, Value: "|"},
+				{Type: driftc.TokenBitOrAssign, Value: "|="},
+				{Type: driftc.TokenLogicalOr, Value: "||"},
+				{Type: driftc.TokenLogicalOrAssign, Value: "||="},
+				{Type: driftc.TokenBitAnd, Value: "&"},
+				{Type: driftc.TokenBitAndAssign, Value: "&="},
+				{Type: driftc.TokenLogicalAnd, Value: "&&"},
+				{Type: driftc.TokenLogicalAndAssign, Value: "&&="},
+				{Type: driftc.TokenEqual, Value: "=="},
+				{Type: driftc.TokenAssign, Value: "="},
+				{Type: driftc.TokenNot, Value: "!"},
+				{Type: driftc.TokenNotEqual, Value: "!="},
+			},
+		},
+		{
+			name:    "unterminated string",
+			input:   "\"hello world",
 			wantErr: true,
 		},
 	}
@@ -50,6 +68,13 @@ func TestLexer_Tokenize(t *testing.T) {
 			if tt.wantErr {
 				t.Fatal("Tokenize() succeeded unexpectedly")
 			}
+
+			if got[len(got)-1].Type != driftc.TokenEOF {
+				t.Fatal("Tokenize() does not end with EOF token")
+			}
+
+			got = got[:len(got)-1]
+
 			if !compareTokens(got, tt.want) {
 				t.Errorf("Tokenize() = %+v\nwant %+v", got, tt.want)
 			}

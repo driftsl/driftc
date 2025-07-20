@@ -44,9 +44,9 @@ const (
 	// literals, done
 
 	TokenStringLiteral  TokenType = "string literal"
-	TokenFloatLiteral   TokenType = "undefined"
-	TokenIntLiteral     TokenType = "undefined"
-	TokenBooleanLiteral TokenType = "true/false"
+	TokenFloatLiteral   TokenType = "float literal"
+	TokenIntLiteral     TokenType = "int literal"
+	TokenBooleanLiteral TokenType = "bool literal"
 
 	// brackets, done
 
@@ -64,7 +64,7 @@ const (
 	TokenDivide   TokenType = "/"
 	TokenMultiply TokenType = "*"
 
-	// logical & bit operators
+	// logical & bit operators, done
 
 	TokenEqual      TokenType = "=="
 	TokenNot        TokenType = "!"
@@ -77,19 +77,16 @@ const (
 
 	// assign operators, done
 
-	TokenAssign         TokenType = "="
-	TokenPlusAssign     TokenType = "+="
-	TokenMinusAssign    TokenType = "-="
-	TokenDivideAssign   TokenType = "/="
-	TokenMultiplyAssign TokenType = "*="
-
-	// not done
-
+	TokenAssign           TokenType = "="
+	TokenPlusAssign       TokenType = "+="
+	TokenMinusAssign      TokenType = "-="
+	TokenDivideAssign     TokenType = "/="
+	TokenMultiplyAssign   TokenType = "*="
+	TokenXorAssign        TokenType = "^="
 	TokenBitOrAssign      TokenType = "|="
 	TokenLogicalOrAssign  TokenType = "||="
 	TokenBitAndAssign     TokenType = "&="
 	TokenLogicalAndAssign TokenType = "&&="
-	TokenXorAssign        TokenType = "^="
 )
 
 type Token struct {
