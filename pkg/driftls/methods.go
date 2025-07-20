@@ -70,12 +70,12 @@ func (s *Server) sendTokens(id any, rawParams json.RawMessage) error {
 		column := tok.Column - 1
 
 		deltaLine := line
-		if prevLine != -1 {
+		if prevLine != -1 { // absoulute, if first token
 			deltaLine -= prevLine
 		}
 
 		deltaStart := column
-		if prevLine == line {
+		if prevLine == line { // delta, if on another line
 			deltaStart -= prevColumn
 		}
 

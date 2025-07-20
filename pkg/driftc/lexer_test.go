@@ -76,7 +76,8 @@ func TestLexer_Tokenize(t *testing.T) {
 	var l driftc.Lexer
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, gotErr := l.Tokenize([]rune(tt.input), tt.parseComments)
+			l.ParseComments = tt.parseComments
+			got, gotErr := l.Tokenize([]rune(tt.input))
 			if gotErr != nil {
 				if !tt.wantErr {
 					t.Errorf("Tokenize() failed: %v", gotErr)

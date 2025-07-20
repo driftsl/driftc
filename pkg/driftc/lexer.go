@@ -8,13 +8,23 @@ import (
 )
 
 type Lexer struct {
-	input []rune
+	ParseComments  bool
+	ParseAllErrors bool
 
-	parseComments bool
+	input []rune
 
 	pos    int
 	line   int
 	column int
+}
+
+type LexerError struct {
+	Token *Token
+	Err   error
+}
+
+func (e *LexerError) Error() string {
+	return fmt.Sprintf("%d:%d: %s", e.Token.Line, e.Token.Column, e.Err)
 }
 
 func (l *Lexer) advance() {
@@ -276,7 +286,7 @@ func (l *Lexer) nextToken() (Token, error) {
 		if l.peek() == '/' {
 			token.Value, token.Type = "/"+l.readWhile(func(r rune) bool { return r != '\n' }), TokenComment
 			l.advance()
-			if !l.parseComments {
+			if !l.ParseComments {
 				return l.nextToken()
 			}
 			break
@@ -321,25 +331,33 @@ func (l *Lexer) nextToken() (Token, error) {
 	return token, nil
 }
 
-func (l *Lexer) Tokenize(input []rune, parseComments bool) ([]Token, error) {
+func (l *Lexer) Tokenize(input []rune) ([]Token, []*LexerError) {
 	l.input = input
-
-	l.parseComments = parseComments
 
 	l.line = 1
 	l.column = 1
 	l.pos = 0
 
+	var errors []*LexerError
 	result := make([]Token, 0)
 
 	for {
 		token, err := l.nextToken()
 		if err != nil {
-			return result, err
+			if errors == nil {
+				errors = make([]*LexerError, 0, 1)
+			}
+
+			errors = append(errors, &LexerError{Token: &token, Err: err})
+
+			if !l.ParseAllErrors {
+				return result, errors
+			}
+
 		}
 		result = append(result, token)
 		if token.Type == TokenEOF {
-			return result, nil
+			return result, errors
 		}
 	}
 }

@@ -8,8 +8,11 @@ import (
 )
 
 func main() {
-	var lexer driftc.Lexer
-	tokens := must(lexer.Tokenize([]rune(string(must(os.ReadFile(os.Args[1])))), false))
+	lexer := driftc.Lexer{ParseAllErrors: true}
+	tokens, errors := lexer.Tokenize([]rune(string(must(os.ReadFile(os.Args[1])))))
+	if errors != nil {
+		panic(errors[0])
+	}
 
 	for i, token := range tokens {
 		fmt.Printf("%d\t%+v\n", i, token)
