@@ -344,16 +344,17 @@ func (l *Lexer) Tokenize(input []rune) ([]Token, []*LexerError) {
 	for {
 		token, err := l.nextToken()
 		if err != nil {
-			if errors == nil {
-				errors = make([]*LexerError, 0, 1)
-			}
+			lexerError := &LexerError{Token: &token, Err: err}
 
-			errors = append(errors, &LexerError{Token: &token, Err: err})
+			if errors == nil {
+				errors = []*LexerError{lexerError}
+			} else {
+				errors = append(errors, lexerError)
+			}
 
 			if !l.ParseAllErrors {
 				return result, errors
 			}
-
 		}
 		result = append(result, token)
 		if token.Type == TokenEOF {
