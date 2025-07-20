@@ -48,12 +48,14 @@ func TestLexer_Tokenize(t *testing.T) {
 		},
 		{
 			name:  "bit and logical operators",
-			input: "| |= || ||= & &= && &&= == = ! !=",
+			input: "| | |= || ||= & & &= && &&= == = ! !=",
 			want: []driftc.Token{
+				{Type: driftc.TokenBitOr, Value: "|"},
 				{Type: driftc.TokenBitOr, Value: "|"},
 				{Type: driftc.TokenBitOrAssign, Value: "|="},
 				{Type: driftc.TokenLogicalOr, Value: "||"},
 				{Type: driftc.TokenLogicalOrAssign, Value: "||="},
+				{Type: driftc.TokenBitAnd, Value: "&"},
 				{Type: driftc.TokenBitAnd, Value: "&"},
 				{Type: driftc.TokenBitAndAssign, Value: "&="},
 				{Type: driftc.TokenLogicalAnd, Value: "&&"},
