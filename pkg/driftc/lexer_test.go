@@ -26,7 +26,7 @@ func TestLexer_Tokenize(t *testing.T) {
 			},
 		},
 		{
-			name:  "divide operator and comments",
+			name:  "divide operator and comments (parse comments)",
 			input: "/= / // this is a comment\n//// another comment\n/",
 			want: []driftc.Token{
 				{Type: driftc.TokenDivideAssign, Value: "/="},
@@ -36,6 +36,15 @@ func TestLexer_Tokenize(t *testing.T) {
 				{Type: driftc.TokenDivide, Value: "/"},
 			},
 			parseComments: true,
+		},
+		{
+			name:  "divide operator and comments (ignore comments)",
+			input: "/= / // this is a comment\n//// another comment\n/",
+			want: []driftc.Token{
+				{Type: driftc.TokenDivideAssign, Value: "/="},
+				{Type: driftc.TokenDivide, Value: "/"},
+				{Type: driftc.TokenDivide, Value: "/"},
+			},
 		},
 		{
 			name:  "bit and logical operators",
