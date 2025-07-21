@@ -16,6 +16,20 @@ type Server struct {
 	documents DocumentsVault
 }
 
+type TextDocumentIdentifier struct {
+	Uri string `json:"uri"`
+}
+
+type Range struct {
+	Start Position `json:"start"`
+	End   Position `json:"end"`
+}
+
+type Position struct {
+	Line      int `json:"line"`
+	Character int `json:"character"`
+}
+
 func NewServer(r *bufio.Reader, w *bufio.Writer) *Server {
 	return &Server{
 		reader: r,
@@ -36,7 +50,7 @@ func (s *Server) Serve() error {
 			return err
 		}
 
-		var data JsonRpcRequest
+		var data JsonRpcRequest[json.RawMessage]
 		if err := json.Unmarshal(body, &data); err != nil {
 			return err
 		}
@@ -69,30 +83,46 @@ func (s *Server) Serve() error {
 	return nil
 }
 
-func (s *Server) sendResponse(id any, r any) error {
+func (s *Server) sendServerResponse(id any, r any) error {
 	return s.sendJsonRpcResponse(id, r, nil)
 }
 
-func (s *Server) sendError(id any, code int, message string) error {
+func (s *Server) sendServerError(id any, code int, message string) error {
 	return s.sendJsonRpcResponse(id, nil, &JsonRpcError{Code: code, Message: message})
 }
 
+func (s *Server) sendNotification(method string, params any) error {
+	return s.sendJson(JsonRpcRequest[any]{
+		JsonRpc: "2.0",
+		Method:  method,
+		Params:  params,
+	})
+}
+
 func (s *Server) sendJsonRpcResponse(id any, result any, jsonRpcError *JsonRpcError) error {
-	data, err := json.Marshal(JsonRpcResponse{
+	return s.sendJson(JsonRpcResponse{
 		JsonRpc: "2.0",
 		Id:      id,
 		Result:  result,
 		Error:   jsonRpcError,
 	})
+}
+
+func (s *Server) sendJson(object any) error {
+	data, err := json.Marshal(object)
 	if err != nil {
 		return err
 	}
 
+	return s.send(data)
+}
+
+func (s *Server) send(data []byte) error {
 	if _, err := s.writer.WriteString(fmt.Sprintf("Content-Length: %d\r\n\r\n", len(data))); err != nil {
 		return err
 	}
 
-	if _, err = s.writer.Write(data); err != nil {
+	if _, err := s.writer.Write(data); err != nil {
 		return err
 	}
 

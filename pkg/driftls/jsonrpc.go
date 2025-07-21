@@ -1,12 +1,10 @@
 package driftls
 
-import "encoding/json"
-
-type JsonRpcRequest struct {
-	JsonRpc string          `json:"jsonrpc"`
-	Method  string          `json:"method"`
-	Params  json.RawMessage `json:"params"`
-	Id      any             `json:"id,omitempty"`
+type JsonRpcRequest[T any] struct {
+	JsonRpc string `json:"jsonrpc"`
+	Method  string `json:"method"`
+	Params  T      `json:"params"`
+	Id      any    `json:"id,omitempty"`
 }
 
 type JsonRpcResponse struct {

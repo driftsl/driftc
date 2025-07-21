@@ -34,7 +34,15 @@ func (s *Server) initialize(id any) error {
 	initializeResult.Capabilities.SemanticTokensProvider.Legend.TokenTypes = tokensArray[:]
 	initializeResult.Capabilities.SemanticTokensProvider.Legend.TokenModifiers = make([]string, 0)
 
-	return s.sendResponse(id, initializeResult)
+	return s.sendServerResponse(id, initializeResult)
+}
+
+type Diagnostic struct {
+	Range    Range  `json:"range"`
+	Severity int    `json:"severity"`
+	Code     *int   `json:"code,omitempty"`
+	Source   string `json:"source"`
+	Message  string `json:"message"`
 }
 
 func (s *Server) sendTokens(id any, rawParams json.RawMessage) error {
@@ -44,12 +52,37 @@ func (s *Server) sendTokens(id any, rawParams json.RawMessage) error {
 		return err
 	}
 
-	lexer := driftc.Lexer{}
+	lexer := driftc.Lexer{ParseAllErrors: true, ParseComments: true}
 
-	tokens, err := lexer.Tokenize([]rune(s.documents.Get(params.TextDocument.Uri)), true)
-	if err != nil {
-		return err
+	tokens, errors := lexer.Tokenize([]rune(s.documents.Get(params.TextDocument.Uri)))
+
+	var notification struct {
+		TextDocumentIdentifier
+		Diagnostics []Diagnostic `json:"diagnostics"`
 	}
+
+	notification.Uri = params.TextDocument.Uri
+	notification.Diagnostics = make([]Diagnostic, 0)
+
+	for _, err := range errors {
+		notification.Diagnostics = append(notification.Diagnostics, Diagnostic{
+			Range: Range{
+				Start: Position{
+					Line:      err.Token.Line - 1,
+					Character: err.Token.Column - 1,
+				},
+				End: Position{
+					Line:      err.Token.Line - 1,
+					Character: err.Token.Column - 1 + len(err.Token.Value),
+				},
+			},
+			Severity: 1,
+			Source:   "lexer",
+			Message:  err.Err.Error(),
+		})
+	}
+
+	s.sendNotification("textDocument/publishDiagnostics", notification)
 
 	var result struct {
 		Data []uint `json:"data"`
@@ -92,5 +125,5 @@ func (s *Server) sendTokens(id any, rawParams json.RawMessage) error {
 		prevLine, prevColumn = line, column
 	}
 
-	return s.sendResponse(id, result)
+	return s.sendServerResponse(id, result)
 }

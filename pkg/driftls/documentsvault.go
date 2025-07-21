@@ -8,10 +8,6 @@ type DocumentsVault struct {
 	Documents map[string]string
 }
 
-type TextDocumentIdentifier struct {
-	Uri string `json:"uri"`
-}
-
 type DocumentParams[T any] struct {
 	TextDocument T `json:"textDocument"`
 }

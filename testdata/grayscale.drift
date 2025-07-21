@@ -1,4 +1,4 @@
-import { dot } from "math;
+import { dot } from "math";
 
 fragment grayscale(coords: vec2, texture: uniform sampler2D): vec4 {
 	let color = texture.get(coords); // vec4 inherited
