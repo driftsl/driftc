@@ -264,6 +264,8 @@ func (l *Lexer) nextToken() (Token, error) {
 		token.Type = TokenComma
 	case '.':
 		token.Type = TokenDot
+	case '@':
+		token.Type = TokenAt
 
 	case '(':
 		token.Type = TokenOpenParen

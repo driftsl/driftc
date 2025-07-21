@@ -5,6 +5,7 @@ type TokenType string
 const (
 	// general, done
 
+	TokenUnknown   TokenType = ""
 	TokenEOF       TokenType = "EOF"
 	TokenName      TokenType = "Name"
 	TokenSemicolon TokenType = ";"
@@ -14,6 +15,7 @@ const (
 	TokenLet       TokenType = "let"
 	TokenReturn    TokenType = "return"
 	TokenComment   TokenType = "COMMENT"
+	TokenAt        TokenType = "@"
 
 	// functions, done
 
@@ -44,10 +46,10 @@ const (
 
 	// literals, done
 
-	TokenStringLiteral  TokenType = "string literal"
-	TokenFloatLiteral   TokenType = "float literal"
-	TokenIntLiteral     TokenType = "int literal"
-	TokenBooleanLiteral TokenType = "bool literal"
+	TokenStringLiteral  TokenType = "STRING LITERAL"
+	TokenFloatLiteral   TokenType = "FLOAT LITERAL"
+	TokenIntLiteral     TokenType = "INT LITERAL"
+	TokenBooleanLiteral TokenType = "BOOLEAN LITERAL"
 
 	// brackets, done
 
