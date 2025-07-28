@@ -3,33 +3,42 @@ package driftc
 type TokenType string
 
 const (
-	// general, done
+	// general
 
 	TokenUnknown   TokenType = ""
 	TokenEOF       TokenType = "EOF"
-	TokenName      TokenType = "Name"
+	TokenName      TokenType = "NAME"
 	TokenSemicolon TokenType = ";"
 	TokenColon     TokenType = ":"
 	TokenComma     TokenType = ","
 	TokenDot       TokenType = "."
-	TokenLet       TokenType = "let"
-	TokenReturn    TokenType = "return"
 	TokenComment   TokenType = "COMMENT"
 	TokenAt        TokenType = "@"
 
-	// functions, done
+	// functions
 
 	TokenFunction TokenType = "function"
 	TokenFragment TokenType = "fragment"
 	TokenVertex   TokenType = "vertex"
 
-	// imports, done
+	// imports
 
 	TokenExport TokenType = "export"
 	TokenImport TokenType = "import"
 	TokenFrom   TokenType = "from"
 
-	// types, done
+	// other keywords
+
+	TokenLet     TokenType = "let"
+	TokenReturn  TokenType = "return"
+	TokenIf      TokenType = "if"
+	TokenElse    TokenType = "else"
+	TokenFor     TokenType = "for"
+	TokenWhile   TokenType = "while"
+	TokenDo      TokenType = "do"
+	TokenUniform TokenType = "uniform"
+
+	// types
 
 	TokenFloat       TokenType = "float"
 	TokenInt         TokenType = "int"
@@ -44,14 +53,14 @@ const (
 	TokenBooleanVec3 TokenType = "bvec3"
 	TokenBooleanVec4 TokenType = "bvec4"
 
-	// literals, done
+	// literals
 
 	TokenStringLiteral  TokenType = "STRING LITERAL"
 	TokenFloatLiteral   TokenType = "FLOAT LITERAL"
 	TokenIntLiteral     TokenType = "INT LITERAL"
 	TokenBooleanLiteral TokenType = "BOOLEAN LITERAL"
 
-	// brackets, done
+	// brackets
 
 	TokenOpenParen    TokenType = "("
 	TokenCloseParen   TokenType = ")"
@@ -60,14 +69,14 @@ const (
 	TokenOpenBracket  TokenType = "["
 	TokenCloseBracket TokenType = "]"
 
-	// general operators, done
+	// general operators
 
 	TokenPlus     TokenType = "+"
 	TokenMinus    TokenType = "-"
 	TokenDivide   TokenType = "/"
 	TokenMultiply TokenType = "*"
 
-	// logical & bit operators, done
+	// logical & bit operators
 
 	TokenEqual      TokenType = "=="
 	TokenNot        TokenType = "!"
@@ -78,7 +87,7 @@ const (
 	TokenBitOr      TokenType = "|"
 	TokenLogicalOr  TokenType = "||"
 
-	// assign operators, done
+	// assign operators
 
 	TokenAssign           TokenType = "="
 	TokenPlusAssign       TokenType = "+="

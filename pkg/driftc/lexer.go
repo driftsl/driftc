@@ -195,11 +195,6 @@ func (l *Lexer) nextToken() (Token, error) {
 		token.Value = l.readWhile(func(r rune) bool { return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' })
 
 		switch token.Value {
-		case "let":
-			token.Type = TokenLet
-		case "return":
-			token.Type = TokenReturn
-
 		case "function":
 			token.Type = TokenFunction
 		case "fragment":
@@ -213,6 +208,23 @@ func (l *Lexer) nextToken() (Token, error) {
 			token.Type = TokenImport
 		case "from":
 			token.Type = TokenFrom
+
+		case "let":
+			token.Type = TokenLet
+		case "return":
+			token.Type = TokenReturn
+		case "if":
+			token.Type = TokenIf
+		case "else":
+			token.Type = TokenElse
+		case "for":
+			token.Type = TokenFor
+		case "while":
+			token.Type = TokenWhile
+		case "do":
+			token.Type = TokenDo
+		case "uniform":
+			token.Type = TokenUniform
 
 		case "float":
 			token.Type = TokenFloat
