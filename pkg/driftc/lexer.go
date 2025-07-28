@@ -191,8 +191,8 @@ func (l *Lexer) nextToken() (Token, error) {
 
 	// keywords & names
 
-	if unicode.IsLetter(ch) {
-		token.Value = l.readWhile(func(r rune) bool { return unicode.IsLetter(r) || unicode.IsDigit(r) })
+	if unicode.IsLetter(ch) || ch == '_' {
+		token.Value = l.readWhile(func(r rune) bool { return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' })
 
 		switch token.Value {
 		case "let":
