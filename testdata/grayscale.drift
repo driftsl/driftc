@@ -3,7 +3,7 @@ import { dot } from "math";
 fragment grayscale(coords: vec2, texture: uniform sampler2D): vec4 {
 	let color = texture.get(coords); // vec4 inherited
 	let luma = getLuma(color); // float inherited
-	return vec4(gray, gray, gray, color.a);
+	return vec4(luma, luma, luma, color.a);
 }
 
 function getLuma(color: vec4): float {
