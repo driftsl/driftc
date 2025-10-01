@@ -71,13 +71,13 @@ func (p *Parser) Parse(tokens []Token) (RootNode, error) {
 func (p *Parser) parseImport() (ImportNode, error) {
 	var result ImportNode
 
-	token, err := p.expect(TokenOpenBrace, TokenName)
+	token, err := p.expect(TokenOpenBrace, TokenIdentifier)
 	if err != nil {
 		return result, err
 	}
 
 	switch token.Type {
-	case TokenName:
+	case TokenIdentifier:
 		result.To = token
 	case TokenOpenBrace:
 		result.To, err = p.parseObjectDestructuring()
@@ -109,7 +109,7 @@ func (p *Parser) parseObjectDestructuring() (DeconstructionNode, error) {
 		var expectedType TokenType
 
 		if name {
-			expectedType = TokenName
+			expectedType = TokenIdentifier
 		} else {
 			expectedType = TokenComma
 		}
@@ -120,7 +120,7 @@ func (p *Parser) parseObjectDestructuring() (DeconstructionNode, error) {
 		}
 
 		switch token.Type {
-		case TokenName:
+		case TokenIdentifier:
 			result.NameTokens = append(result.NameTokens, token)
 		case TokenCloseBrace:
 			return result, nil

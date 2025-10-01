@@ -5,15 +5,15 @@ type TokenType string
 const (
 	// general
 
-	TokenUnknown   TokenType = ""
-	TokenEOF       TokenType = "EOF"
-	TokenName      TokenType = "NAME"
-	TokenSemicolon TokenType = ";"
-	TokenColon     TokenType = ":"
-	TokenComma     TokenType = ","
-	TokenDot       TokenType = "."
-	TokenComment   TokenType = "COMMENT"
-	TokenAt        TokenType = "@"
+	TokenUnknown    TokenType = ""
+	TokenEOF        TokenType = "EOF"
+	TokenIdentifier TokenType = "IDENTIFIER"
+	TokenSemicolon  TokenType = ";"
+	TokenColon      TokenType = ":"
+	TokenComma      TokenType = ","
+	TokenDot        TokenType = "."
+	TokenComment    TokenType = "COMMENT"
+	TokenAt         TokenType = "@"
 
 	// functions
 

@@ -255,7 +255,7 @@ func (l *Lexer) nextToken() (Token, error) {
 			token.Type = TokenBooleanLiteral
 
 		default:
-			token.Type = TokenName
+			token.Type = TokenIdentifier
 		}
 
 		return token, nil

@@ -5,10 +5,10 @@ type RootNode struct {
 }
 
 type ImportNode struct {
-	To   any   // Must be name token or DeconstructionNode
+	To   any   // Must be identifier token or DeconstructionNode
 	From Token // Must be string literal token
 }
 
 type DeconstructionNode struct {
-	NameTokens []Token // Must be name tokens
+	NameTokens []Token // Must be identifier tokens
 }
